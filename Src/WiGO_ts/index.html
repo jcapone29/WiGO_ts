@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../app.css" type="text/css" />
+    <link href="Content/ionic.css" rel="stylesheet">
+    <link href="Content/animate.min.css" rel="stylesheet" />
+    <script src="Scripts/ionic.bundle.min.js"></script>
+    <script src="Scripts/lodash.min.js"></script>
+    <script src="Scripts/ionic-letteravatar.js"></script>
+    <script src="Scripts/ngCordova/ng-cordova.min.js"></script>
+    <script src="dist/app.js"></script>
+</head>
+<body ng-app="wigo.hoogo">
+
+    <div ng-controller="WiHomeCtrl as vm" ng-init="vm.LocalStorageCheck()"  >
+        <ion-side-menus>
+
+            <ion-pane ion-side-menu-content>
+                <ion-nav-bar class="bar bar-header bar-dark">
+                    <ion-nav-back-button class="button-icon"><span class="icon ion-ios7-arrow-left"></span></ion-nav-back-button>
+                </ion-nav-bar>
+                <ion-nav-view></ion-nav-view>
+            </ion-pane>
+
+            <ion-side-menu side="left" ng-class="{'ng-hide' : vm.showside == false}">
+                <ion-header-bar class="bar bar-header bar-dark"></ion-header-bar>
+                <ion-content has-header="true" >
+                    <div class="row">
+                        <div class="col col-33">
+                        
+                            <ionic-letter-avatar data="Joe" shape="round"></ionic-letter-avatar>
+
+                        </div>
+                        <div class="col col-offset-33">
+                            <p class="item-note">{{vm.userdictionary.FirstName}} {{vm.userdictionary.LastName}}</p>
+                            <p class="item-dark">{{vm.userdictionary.UserName}}</p>
+                        </div>
+                    </div>
+                    <ion-list>
+                        <ion-item href="#/tab/home" class="item" menu-close><i class="icon ion-email"></i> Home</ion-item>
+                        <ion-item href="#/about"  class="item" menu-close><i class="icon ion-email"></i> Friends</ion-item>
+                        <ion-item href="#/about"  class="item" accesskey="" menu-close><i class="ion-person-add"></i> Groups</ion-item>
+                        <ion-item href="#/settings"  class="item" accesskey="" menu-close><i class="ion-gear-a"></i> Settings</ion-item>                                        
+                    </ion-list>
+</ion-content>
+            </ion-side-menu>
+
+        </ion-side-menus> 
+    </div>
+</body>
+</html>

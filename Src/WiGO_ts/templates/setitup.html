@@ -1,0 +1,118 @@
+﻿<ion-view title="WiGO">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" ng-click="openMenu()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+
+        <span class="ion-android-notifications">0</span>
+
+    </ion-nav-buttons>
+    <ion-content padding="true">
+        <div class="row">
+            <div class="col col-80">
+                <label class="item item-input">
+                    <div class="input-label">
+                        Place
+                    </div>
+                    <input type="search" placeholder="Search" ng-model="vm.eventSelected.BusinessName" ng-change="vm.SearchHood()" />
+                </label>
+            </div>
+            <div class="col col-10">
+                <button class="button button-clear ion-loop" ng-click="vm.RandomizeHood()">
+                    Randomize
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Hood
+                    </div>
+                    <select ng-model="vm.eventSelected.Neighborhood" ng-change="vm.SelectHood()">
+                        <option ng-repeat="hoods in vm.listHoods">{{hoods}}</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="card col col-33 animated bounceInRight" ng-repeat="top in vm.toparea" ng-click="vm.EventSelect(top)">
+                <div class="item item-text-wrap " ng-class="{'selectedPlace' : vm.eventSelected.BusinessName == top.BusinessName}">
+                    <p class="text-left"> <span class="ion-ios-checkmark" style="color: #029302" ng-show="vm.eventSelected.BusinessName == top.BusinessName"></span></p>
+                    <p class="text-center"> {{top.BusinessName}}</p>
+                    <p class="text-center"> {{top.DESCRIPT}} </p>
+                    <p class="text-right">Open Till:  {{top.ENDTIME}}</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col col-90">
+                <label class="item item-input">
+                    <div class="input-label">
+                        Address
+                    </div>
+                    <input type="text" value="{{vm.eventSelected.Address}}"  />
+                </label>
+            </div>
+            </div>
+        <div class="row">
+            <div class="col col-90">
+                <label class="item item-input">
+                    <div class="input-label">
+                        Event Type
+                    </div>
+                    <input type="search" placeholder="Search" ng-model="vm.eventSelected.DESCRIPT" ng-change="vm.SearchHood()" />
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-50">
+                <ion-slide-box does-continue="true" show-pager="false" on-slide-changed="vm.eventUserList.DateOfEvent = vm.DaysOfWeek[$index].Day;">
+                    <ion-slide ng-repeat="dates in vm.DaysOfWeek">
+                        <div class="row">
+                            <div class="col-10">
+                                <span class="ion-calendar"></span>
+                            </div>
+                            <div class="col-90">
+                                <div class="text-center">
+                                    {{dates.DayOfWeek}}
+                                    <br>
+                                    {{dates.Day}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </ion-slide>
+                </ion-slide-box>
+            </div>
+            <div class="col col-50">
+
+                <label class="item item-input">
+                    <span class="input-label ion-clock"></span>
+                    <input ng-model="vm.eventTimeConvert" type="time" ng-change="vm.eventSelected.timeOfEvent = vm.eventTimeConvert.getTime()" >
+                </label>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col col-33">
+            </div>
+            <div class="col col-33">
+                <label class="item item-input item-stacked-label" style="width:100%">
+                    <textarea placeholder="Message to the People" ng-model="vm.wordTothePeople" rows="4" cols="10"></textarea>
+                </label>
+            </div>
+            <div class="col col-33">
+            </div>
+            </div>
+
+    </ion-content>
+    <button class="button button-float-left">
+        <i class="icon ion-close-round"></i>
+    </button>
+    <button class="button button-float" style="background-color:green !important" ng-click="vm.CreateEvent()">
+        <i class="icon ion-checkmark"></i>
+    </button>
+</ion-view>

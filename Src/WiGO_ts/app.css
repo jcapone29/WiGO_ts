@@ -1,0 +1,154 @@
+﻿body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+span {
+    font-style: italic;
+}
+.pushmenu { /*this is the nav*/
+  background: #3c3933;
+  font-family: Arial, Helvetics, sans-serif;
+  width: 240px;
+  height: 100%;
+  top: 0;
+  z-index: 1000;
+  position:fixed;
+}
+
+.pushmenu h3 {
+  color: #cbbfad;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 15px 20px;
+  margin: 0;
+  background: #282522;    
+  height: 16px;
+}
+
+.pushmenu a {
+  display: block; /* drops the nav vertically*/
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  border-top: 1px solid #56544e;
+  border-bottom: 1px solid #312e2a;
+  padding: 14px;
+}
+
+.pushmenu a:hover {
+  background:#00A287;
+}
+
+.pushmenu a:active {
+  background: #454f5c;
+  color: #fff;
+}
+
+.pushmenu-left {
+  left: -240px;
+
+}
+
+.pushmenu-left.pushmenu-open {
+  left: 0;
+}
+
+.pushmenu-push {
+  overflow-x: hidden;
+  position: relative;
+  left: 0;
+}
+
+.pushmenu-push-toright {
+  left: 240px;
+}
+
+/*Transition*/
+.pushmenu, .pushmenu-push {
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  transition: all 0.3s ease;  
+}
+
+#nav_list {
+  background: url(http://www.onlywebpro.com/demo/jquery/icon_nav.png) no-repeat left top;
+  cursor: pointer;
+  height: 27px;
+  width: 33px;
+  text-indent: -99999em;
+}
+
+nav-list.active {
+  background-position: -33px top;
+}
+
+ .buttonset {
+      background: #00A287;
+      height: 16px;
+      padding: 10px 20px 20px;
+ }
+ 
+ section.content {
+   font-family: Arial, Helvetica, sans-serif;
+   padding: 10px 20px;
+ }
+
+ ion-scroll .item {
+  display: inline-block; 
+  margin: 0; 
+  width:150px; 
+  height:60px
+}
+
+ .selectedPlace {
+    outline: none;
+    border-color: #0F62AA;
+    box-shadow: 0 0 15px #0F62AA;
+ }
+
+
+ .button-float{
+     background-color:#1143FA !important;
+  background: $assertive !important;
+  color:white !important;
+  z-index: 12 !important;
+  position: absolute !important; 
+  bottom: 55px !important;
+  right: 10px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26) !important;
+  -webkit-transform: translate3d(0, 0, 0) !important;
+  transform: translate3d(0, 0, 0) !important;
+  -webkit-transition: 0.2s linear !important;
+  transition: 0.2s linear !important;
+  -webkit-transition-property: -webkit-transform, all !important;
+  transition-property: transform, all !important;
+
+}
+
+  .button-float-left{
+     background-color:red !important;
+  background: $assertive !important;
+  color:white !important;
+  z-index: 12 !important;
+  position: absolute !important; 
+  bottom: 55px !important;
+  left: 10px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26) !important;
+  -webkit-transform: translate3d(0, 0, 0) !important;
+  transform: translate3d(0, 0, 0) !important;
+  -webkit-transition: 0.2s linear !important;
+  transition: 0.2s linear !important;
+  -webkit-transition-property: -webkit-transform, all !important;
+  transition-property: transform, all !important;
+
+}
+
+.button-float:hover{
+  -webkit-transform: translate3d(0, -1px, 0)  !important;
+  transform: translate3d(0, -1px, 0) !important;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4) !important;
+    background: darken($assertive, 10%) !important;
+}

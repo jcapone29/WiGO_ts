@@ -1,0 +1,6 @@
+c:\users\josep\documents\visual studio 2015\Projects\WiGO_ts\WiGO_ts\bin\WiGO_ts.dll.config
+c:\users\josep\documents\visual studio 2015\Projects\WiGO_ts\WiGO_ts\bin\WiGO_ts.dll
+c:\users\josep\documents\visual studio 2015\Projects\WiGO_ts\WiGO_ts\bin\WiGO_ts.pdb
+c:\users\josep\documents\visual studio 2015\Projects\WiGO_ts\WiGO_ts\obj\Debug\WiGO_ts.csprojResolveAssemblyReference.cache
+c:\users\josep\documents\visual studio 2015\Projects\WiGO_ts\WiGO_ts\obj\Debug\WiGO_ts.dll
+c:\users\josep\documents\visual studio 2015\Projects\WiGO_ts\WiGO_ts\obj\Debug\WiGO_ts.pdb

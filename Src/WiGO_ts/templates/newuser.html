@@ -1,0 +1,35 @@
+﻿<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Create New Accont</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">First Name</span>
+                <input type="text" placeholder="First Name" ng-model="vm.firstname">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Last Name</span>
+                <input type="text" placeholder="Last Name" ng-model="vm.lastname">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Username</span>
+                <span class="input-label ion-close-circled" id="newnametaken" ng-show="true" ng-class="{'ng-hide' : vm.userNameList.indexOf(vm.newusername) == -1}" style="color: red"></span>
+                <span class="input-label ion-checkmark-circled" style="color:green" ng-hide="true" ng-class="{'ng-hide' : vm.userNameList.indexOf(vm.newusername) != -1 || vm.userNameList.indexOf(vm.newusername) == 0}" id="newnameok"></span>
+                <input type="text" placeholder="Username" ng-model="vm.newusername">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Password</span>
+                <input type="password" placeholder="Password" ng-model="vm.newpassword">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input type="email" placeholder="Email" ng-model="vm.email">
+            </label>
+        </div>
+        <p class="text-center">
+            <ion-spinner icon="spiral" class="spinner-positive" ng-class="{'ng-hide' : vm.signinloading == false}"></ion-spinner>
+            <button class="button button-balanced" ng-class="{'ng-hide' : vm.signinloading == true}" ng-click="vm.CreateAccount()" >Create Account</button>
+</p>
+    </ion-content>
+</ion-modal-view>

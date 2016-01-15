@@ -1,0 +1,27 @@
+﻿<ion-view view-title="WiGO" >
+    <ion-content ng-init="vm.LocalStorageCheck()">
+        <div class="list list-inset">
+            <label class="item item-input">
+                <span class="input-label">Username</span>
+                <input type="text" ng-model="vm.userdictionary.UserName">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Password</span>
+                <input type="password" ng-model="vm.userdictionary.Password">
+            </label>
+        </div>
+        <div class="padding">
+            <p class="text-center">
+                <ion-spinner icon="spiral" class="spinner-positive"  ng-class="{'ng-hide' : vm.signinloading == false}"></ion-spinner>
+                </p>
+                <button class="button button-block icon-right ion-chevron-right button-positive" ng-class="{'ng-hide' : vm.signinloading == true}" ng-click="vm.LogIn()">
+                    Sign-In
+                </button>
+<p class="text-center">
+                <a href="#/forgot-password">Forgot password</a>
+                &nbsp;
+                <a href="#"  ng-click="vm.NewUserForm()">Create Account</a>
+            </p>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,38 @@
+﻿<ion-view title="WiGO">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" ng-click="openMenu()"></button>
+    </ion-nav-buttons>
+    <ion-content padding="true">
+        <div class="row">
+            <div class="col-25">
+            </div>
+            <div class="col-50">
+                <div class="card">
+                        <div class="row">
+                            <div class="col col-25">
+                                        <span class="item item-avatar">J</span>
+                                </div>
+                            <div class="col col-offset-33">
+                                <span class="ion-beer" ng-show="eventtype == 'drinks'"></span>
+                                <span class="ion-fork" ng-show="eventtype == 'dinner'"></span>
+                                <span class="ion-knife" ng-show="eventtype == 'dinner'"></span>
+                                <span class="ion-spoon" ng-show="eventtype == 'dinner'"></span>
+                            </div>
+                        </div>
+                    <div class="item item-text-wrap">
+                        <p class="text-center"> {{vm.eventSelected.BusinessName}}</p>
+                        <p class="text-center">{{vm.eventSelected.Address}}</p>
+                    </div>
+                    <div class="item item-divider">
+                        <div class="button-bar">
+                            <a class="button button-assertive"><p class="text-center">Not Tonight</p></a>
+                            <a class="button button-balanced"><p class="text-center">I'm In</p></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-25">
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

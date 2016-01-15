@@ -1,0 +1,32 @@
+﻿<ion-view title="WiGO">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" ng-click="openMenu()"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+
+        <span class="ion-android-notifications">0</span>
+
+    </ion-nav-buttons>
+    <ion-content padding="true">
+        <div class="row">
+            <div class="col col-75">
+
+            </div>
+            <div class="col col-25">
+                <div class="list">
+                    <a class="item item-thumbnail-left" ng-repeat="dates in vm.DaysOfWeek" href="#">
+                        <img src="cover.jpg">
+                        {{dates.DayOfWeek}}
+                        <br>
+                        {{dates.Day}}
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </ion-content>
+
+    <button class="button button-float" ng-click="vm.SetitUp()">
+        <i class="icon ion-plus"></i>
+    </button>
+</ion-view>
