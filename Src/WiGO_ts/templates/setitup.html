@@ -7,29 +7,29 @@
         <span class="ion-android-notifications">0</span>
 
     </ion-nav-buttons>
-    <ion-content padding="true">
+    <ion-content class="appcontent" padding="true">
         <div class="row">
-            <div class="col col-80">
-                <label class="item item-input">
+            <div class="col col-67">
+                <label class="item item-input appinput">
                     <div class="input-label">
                         Place
                     </div>
                     <input type="search" placeholder="Search" ng-model="vm.eventSelected.BusinessName" ng-change="vm.SearchHood()" />
                 </label>
             </div>
-            <div class="col col-10">
-                <button class="button button-clear ion-loop" ng-click="vm.RandomizeHood()">
+            <div class="col col-20">
+                <button class="button button-dark ion-loop" ng-click="vm.RandomizeHood()">
                     Randomize
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <label class="item item-input item-select">
+                <label class="item item-input item-select appinput">
                     <div class="input-label">
                         Hood
                     </div>
-                    <select ng-model="vm.eventSelected.Neighborhood" ng-change="vm.SelectHood()">
+                    <select ng-model="vm.eventSelected.Neighborhood" ng-change="vm.SelectHood()" style="background: transparent">
                         <option ng-repeat="hoods in vm.listHoods">{{hoods}}</option>
                     </select>
                 </label>
@@ -48,8 +48,8 @@
 
         </div>
         <div class="row">
-            <div class="col col-90">
-                <label class="item item-input">
+            <div class="col">
+                <label class="item item-input appinput">
                     <div class="input-label">
                         Address
                     </div>
@@ -58,8 +58,8 @@
             </div>
             </div>
         <div class="row">
-            <div class="col col-90">
-                <label class="item item-input">
+            <div class="col">
+                <label class="item item-input appinput">
                     <div class="input-label">
                         Event Type
                     </div>
@@ -70,18 +70,12 @@
         <div class="row">
             <div class="col col-50">
                 <ion-slide-box does-continue="true" show-pager="false" on-slide-changed="vm.eventUserList.DateOfEvent = vm.DaysOfWeek[$index].Day;">
-                    <ion-slide ng-repeat="dates in vm.DaysOfWeek">
-                        <div class="row">
-                            <div class="col-10">
-                                <span class="ion-calendar"></span>
-                            </div>
-                            <div class="col-90">
-                                <div class="text-center">
+                    <ion-slide ng-repeat="dates in vm.DaysOfWeek">                     
+                                <div class="text-center appcalader">
+                                    <span class="ion-ios-calendar-outline"></span>
                                     {{dates.DayOfWeek}}
                                     <br>
                                     {{dates.Day}}
-                                </div>
-                            </div>
                         </div>
 
                     </ion-slide>
@@ -89,30 +83,29 @@
             </div>
             <div class="col col-50">
 
-                <label class="item item-input">
+                <label class="item item-input appinput">
                     <span class="input-label ion-clock"></span>
                     <input ng-model="vm.eventTimeConvert" type="time" ng-change="vm.eventSelected.timeOfEvent = vm.eventTimeConvert.getTime()" >
                 </label>
             </div>
 
         </div>
-        <div class="row">
-            <div class="col col-33">
-            </div>
-            <div class="col col-33">
-                <label class="item item-input item-stacked-label" style="width:100%">
-                    <textarea placeholder="Message to the People" ng-model="vm.wordTothePeople" rows="4" cols="10"></textarea>
-                </label>
-            </div>
-            <div class="col col-33">
-            </div>
-            </div>
+        <div class="row" >
+
+        </div>
+
 
     </ion-content>
-    <button class="button button-float-left">
-        <i class="icon ion-close-round"></i>
+    <button class="button button-float-left" ng-click="vm.EventFreinds()">
+        <i class="icon ion-person-stalker"></i>
+        <span class="badge badge-assertive">{{vm.eventFreinds.length}}</span>
     </button>
-    <button class="button button-float" style="background-color:green !important" ng-click="vm.CreateEvent()">
-        <i class="icon ion-checkmark"></i>
-    </button>
+            <div class="tabs tabs-positive">
+            <a class="tab-item">
+                Cancel
+            </a>
+            <a class="tab-item" ng-click="vm.CreateEvent()" style="border-left: 3px solid white;" >
+                Set It Up
+            </a>
+        </div>
 </ion-view>

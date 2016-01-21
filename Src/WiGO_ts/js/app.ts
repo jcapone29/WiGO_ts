@@ -40,12 +40,17 @@
                 controller: 'WiHomeCtrl',
                 templateUrl: 'templates/about.html'
             })
+            .state('eventfreinds', {
+                url: '/eventfreinds',
+                controller: 'WiHomeCtrl',
+                templateUrl: 'templates/eventFriendList.html'
+            })
             .state('setitup', {
                 url: '/setitup',
                 controller: 'WiHomeCtrl',
                 templateUrl: 'templates/setitup.html'
             })
-         .state('tabs.igoin', {
+            .state('tabs.igoin', {
              url: '/igoin',
              views: {
                  'igoin-tab': {

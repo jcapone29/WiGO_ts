@@ -33,6 +33,7 @@
     <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\ngCordova\ng-cordova.min.js" />
     <Content Include="templates\about.html" />
+    <Content Include="templates\eventFriendList.html" />
     <Content Include="templates\home.html" />
     <Content Include="index.html" />
     <Content Include="templates\IGoin.html" />

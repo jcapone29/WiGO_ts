@@ -39,6 +39,11 @@ var WiGO;
                 controller: 'WiHomeCtrl',
                 templateUrl: 'templates/about.html'
             })
+                .state('eventfreinds', {
+                url: '/eventfreinds',
+                controller: 'WiHomeCtrl',
+                templateUrl: 'templates/eventFriendList.html'
+            })
                 .state('setitup', {
                 url: '/setitup',
                 controller: 'WiHomeCtrl',
@@ -72,7 +77,7 @@ var WiGO;
     var HooGo;
     (function (HooGo) {
         var WiHomeCtrl = (function () {
-            function WiHomeCtrl($scope, _, $ionicSideMenuDelegate, $state, WiService, $ionicModal, $ionicSlideBoxDelegate, $cordovaContacts) {
+            function WiHomeCtrl($scope, _, $ionicSideMenuDelegate, $state, WiService, $ionicModal, $ionicSlideBoxDelegate, $cordovaContacts, $ionicPopover) {
                 this.$scope = $scope;
                 this._ = _;
                 this.$ionicSideMenuDelegate = $ionicSideMenuDelegate;
@@ -81,12 +86,16 @@ var WiGO;
                 this.$ionicModal = $ionicModal;
                 this.$ionicSlideBoxDelegate = $ionicSlideBoxDelegate;
                 this.$cordovaContacts = $cordovaContacts;
+                this.$ionicPopover = $ionicPopover;
                 this.showside = false;
                 this.userdictionary = new UserInfo();
                 this.userNameList = new Array('');
+                this.friendList = new Array();
+                this.friendGroups = new Array();
                 this.places = new Array();
                 this.signinloading = false;
                 this.eventUserList = new EventList();
+                this.eventFreinds = new Array();
                 ////////////
                 this.DaysOfWeek = new Array();
                 this.showside = true;
@@ -116,6 +125,7 @@ var WiGO;
                         _this.$state.go('tabs.home');
                         _this.AreaPlaces();
                         _this.ListDates();
+                        _this.GetUserGroups();
                     }
                     else {
                         alert('User Does not exist');
@@ -128,6 +138,13 @@ var WiGO;
                 this.WiService.GetPlaces().then(function (response) {
                     _this.places = response;
                     _this.listHoods = _this._.uniq(_this._.pluck(_this.places, 'Neighborhood'));
+                });
+            };
+            WiHomeCtrl.prototype.GetUserGroups = function () {
+                var _this = this;
+                this.WiService.GetUserGroups(this.userdictionary.UserID).then(function (response) {
+                    console.log(response);
+                    _this.friendGroups = response;
                 });
             };
             WiHomeCtrl.prototype.UserDataCache = function () {
@@ -149,6 +166,7 @@ var WiGO;
                 this.WiService.GetUsers().then(function (response) {
                     for (var i = 0; i < response.length; i++) {
                         _this.userNameList.push(response[i]['username']);
+                        _this.friendList.push(response[i]);
                     }
                     _this.$scope.modal.show();
                 });
@@ -189,6 +207,7 @@ var WiGO;
             };
             WiHomeCtrl.prototype.ListDates = function () {
                 var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                this.DaysOfWeek = new Array();
                 for (var i = 0; i < 7; i++) {
                     var weekdates = new EventDates();
                     var date = new Date();
@@ -223,7 +242,10 @@ var WiGO;
             WiHomeCtrl.prototype.SetitUp = function () {
                 this.$state.go('setitup');
             };
-            WiHomeCtrl.$inject = ["$scope", "_", "$ionicSideMenuDelegate", "$state", "WiService", "$ionicModal", "$ionicSlideBoxDelegate", "$cordovaContacts"];
+            WiHomeCtrl.prototype.EventFreinds = function () {
+                this.$state.go('eventfreinds');
+            };
+            WiHomeCtrl.$inject = ["$scope", "_", "$ionicSideMenuDelegate", "$state", "WiService", "$ionicModal", "$ionicSlideBoxDelegate", "$cordovaContacts", "$ionicPopover"];
             return WiHomeCtrl;
         })();
         HooGo.WiHomeCtrl = WiHomeCtrl;
@@ -258,6 +280,12 @@ var WiGO;
             return EventList;
         })();
         HooGo.EventList = EventList;
+        var FreindGroup = (function () {
+            function FreindGroup() {
+            }
+            return FreindGroup;
+        })();
+        HooGo.FreindGroup = FreindGroup;
     })(HooGo = WiGO.HooGo || (WiGO.HooGo = {}));
 })(WiGO || (WiGO = {}));
 var WiGO;
@@ -287,6 +315,9 @@ var WiGO;
                 return this.$http.post(this.HostedURL + 'newUser', info).then(function (response) {
                     return response;
                 });
+            };
+            WiService.prototype.GetUserGroups = function (userid) {
+                return this.$http.get(this.HostedURL + "usergroups?userid=" + userid).then(function (r) { return r.data; });
             };
             WiService.prototype.GetLocation = function (location) {
                 location = location.replace('(', '');

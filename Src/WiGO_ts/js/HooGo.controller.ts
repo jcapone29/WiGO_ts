@@ -7,6 +7,8 @@ module WiGO.HooGo {
         showside: boolean = false;
         userdictionary: UserInfo = new UserInfo();
         userNameList: Array<string> = new Array<string>('');
+        friendList: Array<UserInfo> = new Array<UserInfo>();
+        friendGroups: Array<FreindGroup> = new Array<FreindGroup>();
         places: Array<LocationList<Object>> = new Array<LocationList<Object>>();
         listHoods: string[];
         toparea: Object[];
@@ -19,14 +21,16 @@ module WiGO.HooGo {
         eventUserList: EventList<Object> = new EventList<Object>();
         eventTimeConvert: Date;
         wordTothePeople: string;
+        eventFreinds: Array<UserInfo> = new Array<UserInfo>();
         ////////////
         DaysOfWeek: Array<EventDates<Object>> = new Array<EventDates<Object>>();
+        
 
 
 
-        public static $inject: string[] = ["$scope", "_", "$ionicSideMenuDelegate", "$state", "WiService", "$ionicModal", "$ionicSlideBoxDelegate", "$cordovaContacts"];
+        public static $inject: string[] = ["$scope", "_", "$ionicSideMenuDelegate", "$state", "WiService", "$ionicModal", "$ionicSlideBoxDelegate", "$cordovaContacts", "$ionicPopover"];
 
-        constructor(public $scope: any, public _: any, public $ionicSideMenuDelegate: any, public $state: any, public WiService: WiService, public $ionicModal: any, public $ionicSlideBoxDelegate: any, public $cordovaContacts: any) {
+        constructor(public $scope: any, public _: any, public $ionicSideMenuDelegate: any, public $state: any, public WiService: WiService, public $ionicModal: any, public $ionicSlideBoxDelegate: any, public $cordovaContacts: any, public $ionicPopover: any) {
 
             this.showside = true;
             this.NewUserModalLoad();
@@ -73,7 +77,7 @@ module WiGO.HooGo {
                     this.$state.go('tabs.home');
                     this.AreaPlaces();
                     this.ListDates();
-
+                    this.GetUserGroups();
                 }
 
                 else {
@@ -98,6 +102,16 @@ module WiGO.HooGo {
 
         }
 
+        GetUserGroups() {
+
+            this.WiService.GetUserGroups(this.userdictionary.UserID).then((response: any) => {
+
+                console.log(response);
+
+                this.friendGroups = response;
+            });
+        }
+
         UserDataCache() {
 
             localStorage.setItem("WiGOUserName", this.userdictionary.UserName);
@@ -116,6 +130,9 @@ module WiGO.HooGo {
 
         }
 
+
+
+
         NewUserForm() {
 
             this.userNameList = new Array<string>('');
@@ -125,6 +142,7 @@ module WiGO.HooGo {
                 for (var i = 0; i < response.length; i++) {
 
                     this.userNameList.push(response[i]['username']);
+                    this.friendList.push(response[i]);
                 }
 
                 this.$scope.modal.show();
@@ -194,6 +212,8 @@ module WiGO.HooGo {
 
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+            this.DaysOfWeek = new Array<EventDates<Object>>();
+
             for (var i = 0; i < 7; i++) {
                 var weekdates = new EventDates<Object>();
                 var date = new Date();
@@ -247,6 +267,12 @@ module WiGO.HooGo {
         SetitUp() {
 
             this.$state.go('setitup');
+            
+        }
+
+        EventFreinds() {
+
+            this.$state.go('eventfreinds');
         }
 
     }
@@ -256,6 +282,7 @@ module WiGO.HooGo {
 
 
     export class UserInfo {
+        public UserID: number;
         public UserName: string;
         public Password: string;
         public Firstname: string;
@@ -308,5 +335,18 @@ module WiGO.HooGo {
         public DateOfEvent: string;
         public timeOfEvent: number;
         public Active: boolean;
+    }
+
+    export class FreindGroup
+    {
+        public UserID: number;
+        public GroupID: number;
+        public GroupName: string;
+        public FriendUserID: number;
+        public UserName: string;
+        public Phone: number;
+        public Email: string;
+        public  WiGoUser: boolean;
+        public GroupActive: boolean;
     }
 }

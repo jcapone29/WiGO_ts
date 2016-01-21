@@ -1,0 +1,32 @@
+﻿<ion-view>
+    <ion-header-bar>
+        <h1 class="title">Create New Accont</h1>
+    </ion-header-bar>
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-arrow-left-a" ng-click="vm.SetitUp()" ></button>
+    </ion-nav-buttons>
+    <ion-content>
+
+                <div class="list">
+                    <label class="item item-input ">
+                        <span class="input-label">Invites</span>
+                        <input type="text">
+                    </label>
+                </div>
+
+        <div class="row"  style="border-bottom:1px solid gray">
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ion-list>
+                    <ion-item ng-repeat="users in friendList">
+                        {{users.username}}!
+                    </ion-item>
+                </ion-list>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

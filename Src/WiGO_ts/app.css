@@ -5,6 +5,28 @@
 span {
     font-style: italic;
 }
+
+.appcontent {
+
+  background-color: #BEBEBE;
+}
+
+.appinput{
+
+    
+    border-color: transparent !important;
+    border-radius: 10px;
+}
+.appcalader {
+    border-top: 7px solid #FA4B4B;
+    border-right: 1px solid #FA4B4B;
+    border-left: 1px solid #FA4B4B;
+    border-bottom: 1px solid #FA4B4B;
+    color: #FFFFFF;
+    padding: 4px;
+    font-size: initial;
+}
+
 .pushmenu { /*this is the nav*/
   background: #3c3933;
   font-family: Arial, Helvetics, sans-serif;
@@ -128,7 +150,7 @@ nav-list.active {
 }
 
   .button-float-left{
-     background-color:red !important;
+     background-color:#28A54C !important;
   background: $assertive !important;
   color:white !important;
   z-index: 12 !important;
@@ -151,4 +173,14 @@ nav-list.active {
   transform: translate3d(0, -1px, 0) !important;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4) !important;
     background: darken($assertive, 10%) !important;
+}
+
+.square {
+    float:left;
+    position: relative;
+    width: 30%;
+    padding-bottom : 30%; /* = width for a 1:1 aspect ratio */
+    margin:1.66%;
+    background-color:#1E1E1E;
+    overflow:hidden;
 }

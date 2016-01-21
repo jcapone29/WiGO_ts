@@ -37,6 +37,11 @@ module WiGO.HooGo {
             });
         }
 
+        GetUserGroups(userid: number) {
+
+            return this.$http.get(this.HostedURL + "usergroups?userid=" + userid).then(r => r.data);
+        }
+
         GetLocation(location: string) {
 
             location = location.replace('(', '');

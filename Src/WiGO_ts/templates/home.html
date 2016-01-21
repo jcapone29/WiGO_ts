@@ -7,23 +7,44 @@
         <span class="ion-android-notifications">0</span>
 
     </ion-nav-buttons>
-    <ion-content padding="true">
-        <div class="row">
-            <div class="col col-75">
-
-            </div>
-            <div class="col col-25">
-                <div class="list">
-                    <a class="item item-thumbnail-left" ng-repeat="dates in vm.DaysOfWeek" href="#">
-                        <img src="cover.jpg">
-                        {{dates.DayOfWeek}}
-                        <br>
-                        {{dates.Day}}
-                    </a>
+    <ion-content padding="true" class="appcontent">
+            <div class="row">
+                <div class="square">
+                    <div>
+                        {{ vm.DaysOfWeek[0]}}
+                    </div>
 
                 </div>
+                <div class="square">
+                    <div>
+                        {{ vm.DaysOfWeek[1]}}
+                    </div>
+                </div>
+                <div class="square">
+                    <div>
+                        {{ vm.DaysOfWeek[2]}}
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="square">
+                    <div>
+                        {{ vm.DaysOfWeek[3]}}
+                    </div>
+
+                </div>
+                <div class="square">
+                    <div>
+                        {{ vm.DaysOfWeek[4]}}
+                    </div>
+                </div>
+                <div class="square">
+                    <div>
+                        {{ vm.DaysOfWeek[5]}}
+                    </div>
+                </div>
+            </div>
+        
     </ion-content>
 
     <button class="button button-float" ng-click="vm.SetitUp()">
