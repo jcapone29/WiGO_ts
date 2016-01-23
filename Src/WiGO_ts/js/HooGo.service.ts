@@ -3,6 +3,30 @@ module WiGO.HooGo {
 
     export class WiService {
 
+        ////Event////
+        eventChoice: string;
+        eventSelected: LocationList;
+        eventtype: string;
+        eventUserList: EventList<Object> = new EventList<Object>();
+        eventTimeConvert: Date;
+        wordTothePeople: string;
+        eventFreinds: Array<UserInfo> = new Array<UserInfo>();
+        DaysOfWeek: Array<EventDates<Object>> = new Array<EventDates<Object>>();
+        ///User Info////
+        userdictionary: UserInfo = new UserInfo();
+        userNameList: Array<string> = new Array<string>('');
+        location: UserLocation;
+        //Friends Info/////
+        friendList: Array<UserInfo> = new Array<UserInfo>();
+        friendGroups: Array<FreindGroup> = new Array<FreindGroup>();
+        ///Area Info////
+        places: Array<LocationList> = new Array<LocationList>();
+        listHoods: string[];
+        toparea: Object[];
+        neighborhood: string;
+        /////////////
+
+
         public localURL: string = "http://localhost:53978/api/HooGoin/";
         public HostedURL: string = "http://ec2-52-23-228-61.compute-1.amazonaws.com/WiGOAPI/api/HooGoin/";
         public GoogleMapsLocation: string = "http://maps.googleapis.com/maps/api/geocode/json?latlng=";
@@ -42,17 +66,38 @@ module WiGO.HooGo {
             return this.$http.get(this.HostedURL + "usergroups?userid=" + userid).then(r => r.data);
         }
 
-        GetLocation(location: string) {
+        GetLocation() {
 
-            location = location.replace('(', '');
-            location = location.replace(')', '');
-
-            var test = this.GoogleMapsLocation + location + "&sensor=true";
+            var test = this.GoogleMapsLocation + this.eventSelected.Lat + "," + this.eventSelected.Long + "&sensor=true";
 
             return this.$http.get(test).then(r => r.data);
 
         }
 
+        getDistanceFromLatLonInKm(lat2: number, lon2: number): number {
+            var lat1 = this.location.latitude;
+            var lon1 = this.location.longitude;
+
+
+
+            var deg2Rad = deg => {
+                return deg * Math.PI / 180;
+            }
+
+            var r = 6371; // Radius of the earth in km
+            var dLat = deg2Rad(lat2 - lat1);
+            var dLon = deg2Rad(lon2 - lon1);
+            var a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2Rad(lat1)) * Math.cos(deg2Rad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = r * c; // Distance in km
+
+            d = d * 0.621371;
+            d = +d.toPrecision(3);
+            return d;
+        }
     }
 
     app.service("WiService", WiService);

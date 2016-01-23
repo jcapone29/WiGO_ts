@@ -5,48 +5,30 @@ module WiGO.HooGo {
     export class WiHomeCtrl {
 
         showside: boolean = false;
-        userdictionary: UserInfo = new UserInfo();
-        userNameList: Array<string> = new Array<string>('');
-        friendList: Array<UserInfo> = new Array<UserInfo>();
-        friendGroups: Array<FreindGroup> = new Array<FreindGroup>();
-        places: Array<LocationList<Object>> = new Array<LocationList<Object>>();
-        listHoods: string[];
-        toparea: Object[];
         signinloading: boolean = false;
-        neighborhood: string;
-        ////Event////
-        eventChoice: string;
-        eventSelected: LocationList<Object>;
-        eventtype: string;
-        eventUserList: EventList<Object> = new EventList<Object>();
-        eventTimeConvert: Date;
-        wordTothePeople: string;
-        eventFreinds: Array<UserInfo> = new Array<UserInfo>();
-        ////////////
-        DaysOfWeek: Array<EventDates<Object>> = new Array<EventDates<Object>>();
-        
 
 
+        public static $inject: string[] = ["$scope", "_", "$ionicSideMenuDelegate", "$state", "WiService", "$ionicModal", "$ionicSlideBoxDelegate", "$cordovaContacts", "$ionicPopover", "$cordovaGeolocation"];
 
-        public static $inject: string[] = ["$scope", "_", "$ionicSideMenuDelegate", "$state", "WiService", "$ionicModal", "$ionicSlideBoxDelegate", "$cordovaContacts", "$ionicPopover"];
-
-        constructor(public $scope: any, public _: any, public $ionicSideMenuDelegate: any, public $state: any, public WiService: WiService, public $ionicModal: any, public $ionicSlideBoxDelegate: any, public $cordovaContacts: any, public $ionicPopover: any) {
+        constructor(public $scope: any, public _: any, public $ionicSideMenuDelegate: any, public $state: any, public WiService: WiService, public $ionicModal: any, public $ionicSlideBoxDelegate: any, public $cordovaContacts: any, public $ionicPopover: any, public $cordovaGeolocation: any) {
 
             this.showside = true;
             this.NewUserModalLoad();
+            this.GetCurrentLocation();
+           
 
         }
 
 
         LocalStorageCheck() {
 
-            this.userdictionary.UserName = localStorage.getItem("WiGOUserName");
-            this.userdictionary.Password = localStorage.getItem("WiGOUserPassword");
+            this.WiService.userdictionary.UserName = localStorage.getItem("WiGOUserName");
+            this.WiService.userdictionary.Password = localStorage.getItem("WiGOUserPassword");
             
-            if ( this.userdictionary.UserName == null || this.userdictionary.UserName == 'undefined' || this.userdictionary.Password == null || this.userdictionary.Password == 'undefined') {
+            if (this.WiService.userdictionary.UserName == null || this.WiService.userdictionary.UserName == 'undefined' || this.WiService.userdictionary.Password == null || this.WiService.userdictionary.Password == 'undefined') {
                 
-                this.userdictionary.UserName = '';
-                this.userdictionary.Password = '';
+                this.WiService.userdictionary.UserName = '';
+                this.WiService.userdictionary.Password = '';
                 this.$state.go('signin');
             }
 
@@ -65,12 +47,12 @@ module WiGO.HooGo {
             this.UserDataCache();
 
 
-            this.WiService.ConfirmLogin(this.userdictionary).then((response: any) => {
+            this.WiService.ConfirmLogin(this.WiService.userdictionary).then((response: any) => {
 
                 
                 if (response.data.length > 0) {
                     
-                    this.userdictionary = response.data[0];
+                    this.WiService.userdictionary = response.data[0];
 
                     this.signinloading = false;
                     this.showside = true;
@@ -78,6 +60,7 @@ module WiGO.HooGo {
                     this.AreaPlaces();
                     this.ListDates();
                     this.GetUserGroups();
+                    
                 }
 
                 else {
@@ -95,27 +78,36 @@ module WiGO.HooGo {
             this.WiService.GetPlaces().then((response: any) => {
 
 
-                this.places = response;
-                this.listHoods = this._.uniq(this._.pluck(this.places, 'Neighborhood'));
+                this.WiService.places = response;
+                this.WiService.listHoods = this._.uniq(this._.pluck(this.WiService.places, 'Neighborhood'));
+                
+                this._.forEach(this.WiService.places, ((place: LocationList) => {
+
+                    place.Distance = this.WiService.getDistanceFromLatLonInKm(place.Lat, place.Long);
+
+                 
+                }));
 
             });
+
+
+            
 
         }
 
         GetUserGroups() {
 
-            this.WiService.GetUserGroups(this.userdictionary.UserID).then((response: any) => {
+            this.WiService.GetUserGroups(this.WiService.userdictionary.UserID).then((response: any) => {
 
-                console.log(response);
-
-                this.friendGroups = response;
+             
+                this.WiService.friendGroups = response;
             });
         }
 
         UserDataCache() {
 
-            localStorage.setItem("WiGOUserName", this.userdictionary.UserName);
-            localStorage.setItem("WiGOUserPassword", this.userdictionary.Password);
+            localStorage.setItem("WiGOUserName", this.WiService.userdictionary.UserName);
+            localStorage.setItem("WiGOUserPassword", this.WiService.userdictionary.Password);
         }
 
         NewUserModalLoad() {
@@ -131,18 +123,16 @@ module WiGO.HooGo {
         }
 
 
-
-
         NewUserForm() {
 
-            this.userNameList = new Array<string>('');
+            this.WiService.userNameList = new Array<string>('');
 
             this.WiService.GetUsers().then((response: any) => {
 
                 for (var i = 0; i < response.length; i++) {
 
-                    this.userNameList.push(response[i]['username']);
-                    this.friendList.push(response[i]);
+                    this.WiService.userNameList.push(response[i]['username']);
+                    this.WiService.friendList.push(response[i]);
                 }
 
                 this.$scope.modal.show();
@@ -153,7 +143,7 @@ module WiGO.HooGo {
 
             this.signinloading = true;
 
-            this.WiService.CreateNewUser(this.userdictionary).then((response: any) => {
+            this.WiService.CreateNewUser(this.WiService.userdictionary).then((response: any) => {
                 this.signinloading = false;
                 this.$scope.modal.hide();
                 this.showside = true;
@@ -162,57 +152,18 @@ module WiGO.HooGo {
 
         }
 
-        SelectHood() {
 
-
-            var area = this._.filter(this.places, "Neighborhood", this.eventSelected.Neighborhood);
-            this.toparea = this._.sample(area, 3);
-
-
-        }
-
-        RandomizeHood() {
-
-            if (this.eventSelected == undefined) {
-
-                this.eventSelected = new LocationList();
-
-                this.eventSelected.Neighborhood = this._.sample(this.listHoods);
-            }
-
-            else {
-                this.eventSelected.Neighborhood = this._.sample(this.listHoods);
-            }
-
-            var area = this._.filter(this.places, "Neighborhood", this.eventSelected.Neighborhood);
-            this.toparea = this._.sample(area, 3);
-        }
-
-
-        SearchHood() {
-
-           
-
-            var topsearch = [];
-            var search = this.eventSelected.BusinessName;
-            var test = this._.forEach(this.places, function (n, key) {
-                if (n["BusinessName"].toLowerCase().indexOf(search.toLowerCase()) > -1)
-
-                    topsearch.push(n);
-                
-            });
-
-            this.toparea = this._.sample(topsearch, 3);
-
-            
-          
-        }
 
         ListDates() {
 
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
 
-            this.DaysOfWeek = new Array<EventDates<Object>>();
+
+
+            this.WiService.DaysOfWeek = new Array<EventDates<Object>>();
 
             for (var i = 0; i < 7; i++) {
                 var weekdates = new EventDates<Object>();
@@ -223,40 +174,20 @@ module WiGO.HooGo {
                 var dayposition = date.getDay().toString();
                 var day = days[dayposition];
 
-                weekdates.Day = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
+                weekdates.Month = date.getMonth() + 1;
+                weekdates.Day = date.getDate();
+                weekdates.Year = date.getFullYear();
                 weekdates.DayOfWeek = day.toString();
-                this.DaysOfWeek.push(weekdates);
+                weekdates.MonthName = monthNames[date.getMonth()];
+                this.WiService.DaysOfWeek.push(weekdates);
 
             }
 
-            this.eventUserList.DateOfEvent = this.DaysOfWeek[0].Day
+            this.WiService.eventUserList.DateOfEvent = this.WiService.DaysOfWeek[0].Day.toString();
 
         }
 
-        EventSelect(Event: LocationList<Object>) {
 
-            this.eventSelected = Event;
-           
-            this.WiService.GetLocation(this.eventSelected.Location).then((response: any) => {
-
-                this.eventSelected.Address = response.results[0]['formatted_address'];
-
-            });
-        }
-
-
-        CreateEvent() {
-
-           
-
-            var event = new NewEvent<Object>();
-            event.LeaderInfo = this.userdictionary;
-            event.Location = this.eventSelected;
-            event.EventDate = this.eventUserList.DateOfEvent;
-            event.WordfromLeader = this.wordTothePeople;
-
-            console.log(event);
-        }
 
         SignOut() {
 
@@ -270,11 +201,22 @@ module WiGO.HooGo {
             
         }
 
-        EventFreinds() {
 
-            this.$state.go('eventfreinds');
+
+
+        GetCurrentLocation() {
+
+            this.WiService.location = new UserLocation();
+
+            this.$cordovaGeolocation.getCurrentPosition().then((position: any) => {
+
+                this.WiService.location = position["coords"];
+             
+            });
+
         }
 
+        
     }
 
     app.controller("WiHomeCtrl", WiHomeCtrl);
@@ -294,7 +236,7 @@ module WiGO.HooGo {
 
     }
 
-    export class LocationList<Object> {
+    export class LocationList {
         public BusinessName: string;
         public DESCRIPT: string;
         public Neighborhood: string;
@@ -305,37 +247,22 @@ module WiGO.HooGo {
         public LICCATDESC: string;
         public ENDTIME: string;
         public Location: string;
+        public Long: number;
+        public Lat: number;
+        public Distance: number;
     }
 
     export class EventDates<Object> {
 
-        public DayOfWeek: string;
-        public Day: string;
+        public DayOfWeek: number;
+        public MonthName: string;
+        public Month: number;
+        public Day: number;
+        public Year: number;
     }
 
-    export class NewEvent<Object> {
 
-        public LeaderInfo: UserInfo;
-        public Location: LocationList<Object>;
-        public EventDate: string;
-        public WordfromLeader: string;
 
-    }
-
-    export class EventList<Object>
-    {
-        public UserID: number;
-        public EventName: string;
-        public Location: string;
-        public Long: string;
-        public Lat: string;
-        public Address: string;
-        public Attending: boolean;
-        public LeaderID: number;
-        public DateOfEvent: string;
-        public timeOfEvent: number;
-        public Active: boolean;
-    }
 
     export class FreindGroup
     {
@@ -348,5 +275,15 @@ module WiGO.HooGo {
         public Email: string;
         public  WiGoUser: boolean;
         public GroupActive: boolean;
+    }
+
+    export class UserLocation {
+
+        public accuracy: number
+        public altitude: number
+        public altitudeAccuracy: any;
+        public heading: any;
+        public latitude: number;
+        public longitude: number;
     }
 }

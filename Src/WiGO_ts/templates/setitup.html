@@ -1,4 +1,4 @@
-﻿<ion-view title="WiGO">
+﻿<ion-view title="WiGO" ng-controller="SetItUpCtrl as vm">
     <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" ng-click="openMenu()"></button>
     </ion-nav-buttons>
@@ -7,89 +7,46 @@
         <span class="ion-android-notifications">0</span>
 
     </ion-nav-buttons>
-    <ion-content class="appcontent" padding="true">
-        <div class="row">
-            <div class="col col-67">
-                <label class="item item-input appinput">
-                    <div class="input-label">
-                        Place
-                    </div>
-                    <input type="search" placeholder="Search" ng-model="vm.eventSelected.BusinessName" ng-change="vm.SearchHood()" />
-                </label>
+    <ion-content   class="appcontent" padding="true"  ng-init="vm.RandomizeHood()">
+        <ion-scroll direction="x" class="item wide-item" style="background-color: transparent !important; border: none; width:100%;">
+            <div ng-repeat="top in vm.WiService.toparea" class="item animated bounceInRight"  ng-click="vm.EventSelect(top)"  ng-class="{'selectedPlace' : vm.WiService.eventSelected.BusinessName == top.BusinessName}" style="height:130px;">
+                <p class="text-left"> <span class="ion-ios-checkmark" style="color: #029302" ng-show="vm.WiService.eventSelected.BusinessName == top.BusinessName"></span></p>
+                <p class="text-center"> {{top.BusinessName}}</p>
+                <p class="text-center"> {{top.DESCRIPT}} </p>
+                <p class="text-right">Distance:  {{top.Distance}} mi</p>
             </div>
-            <div class="col col-20">
-                <button class="button button-dark ion-loop" ng-click="vm.RandomizeHood()">
-                    Randomize
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label class="item item-input item-select appinput">
-                    <div class="input-label">
-                        Hood
-                    </div>
-                    <select ng-model="vm.eventSelected.Neighborhood" ng-change="vm.SelectHood()" style="background: transparent">
-                        <option ng-repeat="hoods in vm.listHoods">{{hoods}}</option>
-                    </select>
-                </label>
-            </div>
-        </div>
-        <div class="row">
+        </ion-scroll>
 
-            <div class="card col col-33 animated bounceInRight" ng-repeat="top in vm.toparea" ng-click="vm.EventSelect(top)">
-                <div class="item item-text-wrap " ng-class="{'selectedPlace' : vm.eventSelected.BusinessName == top.BusinessName}">
-                    <p class="text-left"> <span class="ion-ios-checkmark" style="color: #029302" ng-show="vm.eventSelected.BusinessName == top.BusinessName"></span></p>
-                    <p class="text-center"> {{top.BusinessName}}</p>
-                    <p class="text-center"> {{top.DESCRIPT}} </p>
-                    <p class="text-right">Open Till:  {{top.ENDTIME}}</p>
-                </div>
-            </div>
-
+        <div class="list">
+            <label class="item item-input setitin">
+                <span class="input-label">Place</span>
+                <input type="text"  ng-model="vm.WiService.eventSelected.BusinessName" ng-change="vm.SearchHood()">
+            </label>
+            <label class="item item-input setitin">
+                <span class="input-label">Hood</span>
+                <select ng-model="vm.WiService.eventSelected.Neighborhood" ng-change="vm.SelectHood()" style="background: transparent">
+                    <option ng-repeat="hoods in vm.WiService.listHoods">{{hoods}}</option>
+                </select>
+            </label>
+            <label class="item item-input setitin">
+                <span class="input-label">Address</span>
+                <input type="text"  value="{{vm.WiService.eventSelected.Address}}" >
+            </label>
+            <label class="item item-input setitin">
+                <span class="input-label ion-clock"></span>
+                <input ng-model="vm.WiService.eventTimeConvert" type="time" ng-change="vm.WiService.eventSelected.timeOfEvent = vm.WiService.eventTimeConvert.getTime()">
+            </label>
         </div>
-        <div class="row">
-            <div class="col">
-                <label class="item item-input appinput">
-                    <div class="input-label">
-                        Address
-                    </div>
-                    <input type="text" value="{{vm.eventSelected.Address}}"  />
-                </label>
-            </div>
-            </div>
-        <div class="row">
-            <div class="col">
-                <label class="item item-input appinput">
-                    <div class="input-label">
-                        Event Type
-                    </div>
-                    <input type="search" placeholder="Search" ng-model="vm.eventSelected.DESCRIPT" ng-change="vm.SearchHood()" />
-                </label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-50">
-                <ion-slide-box does-continue="true" show-pager="false" on-slide-changed="vm.eventUserList.DateOfEvent = vm.DaysOfWeek[$index].Day;">
-                    <ion-slide ng-repeat="dates in vm.DaysOfWeek">                     
-                                <div class="text-center appcalader">
-                                    <span class="ion-ios-calendar-outline"></span>
-                                    {{dates.DayOfWeek}}
-                                    <br>
-                                    {{dates.Day}}
-                        </div>
 
-                    </ion-slide>
-                </ion-slide-box>
-            </div>
-            <div class="col col-50">
-
-                <label class="item item-input appinput">
-                    <span class="input-label ion-clock"></span>
-                    <input ng-model="vm.eventTimeConvert" type="time" ng-change="vm.eventSelected.timeOfEvent = vm.eventTimeConvert.getTime()" >
-                </label>
-            </div>
-
-        </div>
+        <ion-scroll direction="x" class="item wide-item" style="background-color: transparent !important; border: none;width:100%;">
+            <div ng-repeat="dates in vm.WiService.DaysOfWeek" class="item animated bounceInRight" ng-click="vm.WiService.eventUserList.DateOfEvent = dates.Day" style="background-color:transparent !important; border: none; height:230px;">
+                <time datetime="2014-09-20" class="icon">
+                    <em>{{dates.DayOfWeek}}</em>
+                    <strong>{{dates.MonthName}}</strong>
+                    <span>{{dates.Day}}</span>
+                    </time>
+</div>
+        </ion-scroll>
         <div class="row" >
 
         </div>
@@ -98,7 +55,7 @@
     </ion-content>
     <button class="button button-float-left" ng-click="vm.EventFreinds()">
         <i class="icon ion-person-stalker"></i>
-        <span class="badge badge-assertive">{{vm.eventFreinds.length}}</span>
+        <span class="badge badge-assertive">{{vm.WiService.eventFreinds.length}}</span>
     </button>
             <div class="tabs tabs-positive">
             <a class="tab-item">

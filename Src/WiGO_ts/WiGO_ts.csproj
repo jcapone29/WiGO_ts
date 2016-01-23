@@ -836,6 +836,7 @@
     <TypeScriptCompile Include="js\app.ts" />
     <TypeScriptCompile Include="js\HooGo.controller.ts" />
     <TypeScriptCompile Include="js\HooGo.service.ts" />
+    <TypeScriptCompile Include="js\Setitup.controller.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />

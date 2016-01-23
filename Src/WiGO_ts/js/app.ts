@@ -47,7 +47,7 @@
             })
             .state('setitup', {
                 url: '/setitup',
-                controller: 'WiHomeCtrl',
+                controller: 'SetItUpCtrl',
                 templateUrl: 'templates/setitup.html'
             })
             .state('tabs.igoin', {
