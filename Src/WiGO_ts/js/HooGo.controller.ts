@@ -6,6 +6,7 @@ module WiGO.HooGo {
 
         showside: boolean = false;
         signinloading: boolean = false;
+        allContacts: any;
 
 
         public static $inject: string[] = ["$scope", "_", "$ionicSideMenuDelegate", "$state", "WiService", "$ionicModal", "$ionicSlideBoxDelegate", "$cordovaContacts", "$ionicPopover", "$cordovaGeolocation"];
@@ -15,10 +16,14 @@ module WiGO.HooGo {
             this.showside = true;
             this.NewUserModalLoad();
             this.GetCurrentLocation();
-           
+          
 
         }
 
+        GetContact() {
+
+ 
+        }
 
         LocalStorageCheck() {
 
@@ -57,7 +62,7 @@ module WiGO.HooGo {
                     this.signinloading = false;
                     this.showside = true;
                     this.$state.go('tabs.home');
-                    this.AreaPlaces();
+                    //this.AreaPlaces();
                     this.ListDates();
                     this.GetUserGroups();
                     
@@ -211,7 +216,11 @@ module WiGO.HooGo {
             this.$cordovaGeolocation.getCurrentPosition().then((position: any) => {
 
                 this.WiService.location = position["coords"];
-             
+
+                this.WiService.userSearch.latitude = this.WiService.location.latitude;
+                this.WiService.userSearch.longitude = this.WiService.location.longitude;
+
+
             });
 
         }

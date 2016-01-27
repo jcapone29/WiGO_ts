@@ -94,6 +94,8 @@ var WiGO;
                 this.NewUserModalLoad();
                 this.GetCurrentLocation();
             }
+            WiHomeCtrl.prototype.GetContact = function () {
+            };
             WiHomeCtrl.prototype.LocalStorageCheck = function () {
                 this.WiService.userdictionary.UserName = localStorage.getItem("WiGOUserName");
                 this.WiService.userdictionary.Password = localStorage.getItem("WiGOUserPassword");
@@ -116,7 +118,7 @@ var WiGO;
                         _this.signinloading = false;
                         _this.showside = true;
                         _this.$state.go('tabs.home');
-                        _this.AreaPlaces();
+                        //this.AreaPlaces();
                         _this.ListDates();
                         _this.GetUserGroups();
                     }
@@ -209,6 +211,8 @@ var WiGO;
                 this.WiService.location = new UserLocation();
                 this.$cordovaGeolocation.getCurrentPosition().then(function (position) {
                     _this.WiService.location = position["coords"];
+                    _this.WiService.userSearch.latitude = _this.WiService.location.latitude;
+                    _this.WiService.userSearch.longitude = _this.WiService.location.longitude;
                 });
             };
             WiHomeCtrl.$inject = ["$scope", "_", "$ionicSideMenuDelegate", "$state", "WiService", "$ionicModal", "$ionicSlideBoxDelegate", "$cordovaContacts", "$ionicPopover", "$cordovaGeolocation"];
@@ -256,12 +260,14 @@ var WiGO;
             function WiService($http, $q) {
                 this.$http = $http;
                 this.$q = $q;
+                this.yelpLocations = new Array();
                 this.eventUserList = new HooGo.EventList();
                 this.eventFreinds = new Array();
                 this.DaysOfWeek = new Array();
                 ///User Info////
                 this.userdictionary = new HooGo.UserInfo();
                 this.userNameList = new Array('');
+                this.userSearch = new HooGo.YelpSearch();
                 //Friends Info/////
                 this.friendList = new Array();
                 this.friendGroups = new Array();
@@ -277,6 +283,13 @@ var WiGO;
                     return response;
                 });
             };
+            WiService.prototype.GetYelpSearch = function (usersearch) {
+                usersearch.searchterm = this.eventSelected.name;
+                usersearch.city = "Boston";
+                usersearch.state = "MA";
+                console.log(usersearch);
+                return this.$http.get(this.HostedURL + "yelpbusiness", { params: usersearch }).then(function (r) { return r.data; });
+            };
             WiService.prototype.GetPlaces = function () {
                 return this.$http.get(this.HostedURL + "places").then(function (r) { return r.data; });
             };
@@ -291,10 +304,10 @@ var WiGO;
             WiService.prototype.GetUserGroups = function (userid) {
                 return this.$http.get(this.HostedURL + "usergroups?userid=" + userid).then(function (r) { return r.data; });
             };
-            WiService.prototype.GetLocation = function () {
-                var test = this.GoogleMapsLocation + this.eventSelected.Lat + "," + this.eventSelected.Long + "&sensor=true";
-                return this.$http.get(test).then(function (r) { return r.data; });
-            };
+            //GetLocation() {
+            //    var test = this.GoogleMapsLocation + this.eventSelected.Lat + "," + this.eventSelected.Long + "&sensor=true";
+            //    return this.$http.get(test).then(r => r.data);
+            //}
             WiService.prototype.getDistanceFromLatLonInKm = function (lat2, lon2) {
                 var lat1 = this.location.latitude;
                 var lon1 = this.location.longitude;
@@ -337,36 +350,20 @@ var WiGO;
                 this.$ionicPopover = $ionicPopover;
                 this.$cordovaGeolocation = $cordovaGeolocation;
             }
-            SetItUpCtrl.prototype.SelectHood = function () {
-                var area = this._.filter(this.WiService.places, "Neighborhood", this.WiService.eventSelected.Neighborhood);
-                this.WiService.toparea = this._.sample(area, 10);
-            };
-            SetItUpCtrl.prototype.RandomizeHood = function () {
-                if (this.WiService.eventSelected == undefined) {
-                    this.WiService.eventSelected = new HooGo.LocationList();
-                    this.WiService.eventSelected.Neighborhood = this._.sample(this.WiService.listHoods);
-                }
-                else {
-                    this.WiService.eventSelected.Neighborhood = this._.sample(this.WiService.listHoods);
-                }
-                var area = this._.filter(this.WiService.places, "Neighborhood", this.WiService.eventSelected.Neighborhood);
-                this.WiService.toparea = this._.sample(area, 10);
-            };
-            SetItUpCtrl.prototype.SearchHood = function () {
-                var topsearch = [];
-                var search = this.WiService.eventSelected.BusinessName;
-                var test = this._.forEach(this.WiService.places, function (n, key) {
-                    if (n["BusinessName"].toLowerCase().indexOf(search.toLowerCase()) > -1)
-                        topsearch.push(n);
+            SetItUpCtrl.prototype.YelpBusiness = function () {
+                var _this = this;
+                this.WiService.GetYelpSearch(this.WiService.userSearch).then(function (response) {
+                    _this.WiService.yelpLocations = response;
+                    _this._.forEach(_this.WiService.yelpLocations, (function (place) {
+                        place.distance = _this.WiService.getDistanceFromLatLonInKm(place.location.coordinate["latitude"], place.location.coordinate["longitude"]);
+                    }));
                 });
-                this.WiService.toparea = this._.sample(topsearch, 10);
             };
             SetItUpCtrl.prototype.EventSelect = function (Event) {
-                var _this = this;
                 this.WiService.eventSelected = Event;
-                this.WiService.GetLocation().then(function (response) {
-                    _this.WiService.eventSelected.Address = response.results[0]['formatted_address'];
-                });
+                //this.WiService.GetLocation().then((response: any) => {
+                //    this.WiService.eventSelected.location.address = response.results[0]['formatted_address'];
+                //});
             };
             SetItUpCtrl.prototype.CreateEvent = function () {
                 var event = new NewEvent();
@@ -374,7 +371,6 @@ var WiGO;
                 event.Location = this.WiService.eventSelected;
                 event.EventDate = this.WiService.eventUserList.DateOfEvent;
                 event.WordfromLeader = this.WiService.wordTothePeople;
-                console.log(event);
             };
             SetItUpCtrl.prototype.EventFreinds = function () {
                 this.$state.go('eventfreinds');
@@ -396,6 +392,24 @@ var WiGO;
             return NewEvent;
         })();
         HooGo.NewEvent = NewEvent;
+        var YelpSearch = (function () {
+            function YelpSearch() {
+            }
+            return YelpSearch;
+        })();
+        HooGo.YelpSearch = YelpSearch;
+        var YelpPlaces = (function () {
+            function YelpPlaces() {
+            }
+            return YelpPlaces;
+        })();
+        HooGo.YelpPlaces = YelpPlaces;
+        var YelpLocations = (function () {
+            function YelpLocations() {
+            }
+            return YelpLocations;
+        })();
+        HooGo.YelpLocations = YelpLocations;
     })(HooGo = WiGO.HooGo || (WiGO.HooGo = {}));
 })(WiGO || (WiGO = {}));
 //# sourceMappingURL=app.js.map

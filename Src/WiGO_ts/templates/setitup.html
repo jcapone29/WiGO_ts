@@ -9,28 +9,32 @@
     </ion-nav-buttons>
     <ion-content   class="appcontent" padding="true"  ng-init="vm.RandomizeHood()">
         <ion-scroll direction="x" class="item wide-item" style="background-color: transparent !important; border: none; width:100%;">
-            <div ng-repeat="top in vm.WiService.toparea" class="item animated bounceInRight"  ng-click="vm.EventSelect(top)"  ng-class="{'selectedPlace' : vm.WiService.eventSelected.BusinessName == top.BusinessName}" style="height:130px;">
-                <p class="text-left"> <span class="ion-ios-checkmark" style="color: #029302" ng-show="vm.WiService.eventSelected.BusinessName == top.BusinessName"></span></p>
-                <p class="text-center"> {{top.BusinessName}}</p>
-                <p class="text-center"> {{top.DESCRIPT}} </p>
-                <p class="text-right">Distance:  {{top.Distance}} mi</p>
+            <div ng-repeat="top in vm.WiService.yelpLocations" class="item animated bounceInRight"  ng-click="vm.EventSelect(top)"
+                   ng-class="{'selectedPlace' : vm.WiService.eventSelected.name == top.name}" style="height:130px; background-image: url({{top.image_url}}); background-repeat: no-repeat; background-size: cover;">
+
+                    <p class="text-left" style="color: #FFFFFF"> <span class="ion-ios-star" style="color: rgb(251, 255, 32); position:fixed; top: 0; right: 3px; font-size:20px" ng-show="vm.WiService.eventSelected.name == top.name"></span></p>
+  
+
+                    <p  style="color: #FFFFFF"> {{top.name}}</p>
+        
+                  <p style="position: fixed; bottom:15px; left:0; color: #FFFFFF">{{top.review_count}} Reviews</p>
+                   <img src="{{top.rating_img_url}}" style="position: fixed; bottom:0; left:0; ">
+          
+         
+                    <p style="position: fixed; bottom:0; right:0; color: #FFFFFF"><span class="ion-android-pin" style="color:red"></span> {{top.distance}} mi</p>
+          
+                
             </div>
         </ion-scroll>
 
         <div class="list">
             <label class="item item-input setitin">
                 <span class="input-label">Place</span>
-                <input type="text"  ng-model="vm.WiService.eventSelected.BusinessName" ng-change="vm.SearchHood()">
-            </label>
-            <label class="item item-input setitin">
-                <span class="input-label">Hood</span>
-                <select ng-model="vm.WiService.eventSelected.Neighborhood" ng-change="vm.SelectHood()" style="background: transparent">
-                    <option ng-repeat="hoods in vm.WiService.listHoods">{{hoods}}</option>
-                </select>
+                <input type="text"  ng-model="vm.WiService.eventSelected.name" ng-change="vm.YelpBusiness()">
             </label>
             <label class="item item-input setitin">
                 <span class="input-label">Address</span>
-                <input type="text"  value="{{vm.WiService.eventSelected.Address}}" >
+                <input type="text"  value="{{vm.WiService.eventSelected.location.address[0]}}" >
             </label>
             <label class="item item-input setitin">
                 <span class="input-label ion-clock"></span>

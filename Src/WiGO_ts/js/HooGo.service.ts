@@ -5,7 +5,8 @@ module WiGO.HooGo {
 
         ////Event////
         eventChoice: string;
-        eventSelected: LocationList;
+        eventSelected: YelpPlaces;
+        yelpLocations: Array<YelpPlaces> = new Array<YelpPlaces>();
         eventtype: string;
         eventUserList: EventList<Object> = new EventList<Object>();
         eventTimeConvert: Date;
@@ -15,6 +16,7 @@ module WiGO.HooGo {
         ///User Info////
         userdictionary: UserInfo = new UserInfo();
         userNameList: Array<string> = new Array<string>('');
+        userSearch: YelpSearch<Object> = new YelpSearch<Object>();
         location: UserLocation;
         //Friends Info/////
         friendList: Array<UserInfo> = new Array<UserInfo>();
@@ -44,6 +46,18 @@ module WiGO.HooGo {
 
         }
 
+        GetYelpSearch(usersearch: YelpSearch<Object>) {
+            
+
+            usersearch.searchterm = this.eventSelected.name;
+            usersearch.city = "Boston";
+            usersearch.state = "MA";
+
+            console.log(usersearch);
+
+            return this.$http.get(this.HostedURL + "yelpbusiness", { params: usersearch }).then(r => r.data);
+        }
+
         GetPlaces() {
 
             return this.$http.get(this.HostedURL + "places").then(r => r.data);
@@ -66,13 +80,13 @@ module WiGO.HooGo {
             return this.$http.get(this.HostedURL + "usergroups?userid=" + userid).then(r => r.data);
         }
 
-        GetLocation() {
+        //GetLocation() {
 
-            var test = this.GoogleMapsLocation + this.eventSelected.Lat + "," + this.eventSelected.Long + "&sensor=true";
+        //    var test = this.GoogleMapsLocation + this.eventSelected.Lat + "," + this.eventSelected.Long + "&sensor=true";
 
-            return this.$http.get(test).then(r => r.data);
+        //    return this.$http.get(test).then(r => r.data);
 
-        }
+        //}
 
         getDistanceFromLatLonInKm(lat2: number, lon2: number): number {
             var lat1 = this.location.latitude;

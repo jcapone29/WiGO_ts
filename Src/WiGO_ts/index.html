@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col col-33">
                         
-                            <ionic-letter-avatar data="Joe" shape="round"></ionic-letter-avatar>
+                            <ionic-letter-avatar data="Re" shape="round"></ionic-letter-avatar>
 
                         </div>
                         <div class="col col-offset-33">
@@ -45,10 +45,14 @@
                         <ion-item href="#/about"  class="item" accesskey="" menu-close><i class="ion-person-add"></i> Groups</ion-item>
                         <ion-item href="#/settings"  class="item" accesskey="" menu-close><i class="ion-gear-a"></i> Settings</ion-item>                                        
                     </ion-list>
+                    <div class="bar bar-footer">
+                        <button class="button button-dark" ng-click="vm.SignOut()"> Sign Out</button>
+                    </div>
 </ion-content>
             </ion-side-menu>
 
         </ion-side-menus> 
+
     </div>
 </body>
 </html>

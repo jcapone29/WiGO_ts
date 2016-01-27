@@ -13,59 +13,33 @@
 
 
 
-        SelectHood() {
+        YelpBusiness() {
+            this.WiService.GetYelpSearch(this.WiService.userSearch).then((response: any) => {
 
-            var area = this._.filter(this.WiService.places, "Neighborhood", this.WiService.eventSelected.Neighborhood);
-            this.WiService.toparea = this._.sample(area, 10);
+                this.WiService.yelpLocations = response;
 
+                this._.forEach(this.WiService.yelpLocations, ((place: YelpPlaces) => {
 
-        }
-
-        RandomizeHood() {
-
-            if (this.WiService.eventSelected == undefined) {
-
-                this.WiService.eventSelected = new LocationList();
-
-                this.WiService.eventSelected.Neighborhood = this._.sample(this.WiService.listHoods);
-            }
-
-            else {
-                this.WiService.eventSelected.Neighborhood = this._.sample(this.WiService.listHoods);
-            }
-
-            var area = this._.filter(this.WiService.places, "Neighborhood", this.WiService.eventSelected.Neighborhood);
-            this.WiService.toparea = this._.sample(area, 10);
-        }
+                    place.distance = this.WiService.getDistanceFromLatLonInKm(place.location.coordinate["latitude"], place.location.coordinate["longitude"]);
 
 
-        SearchHood() {
+                }));
 
-            var topsearch = [];
-            var search = this.WiService.eventSelected.BusinessName;
-            var test = this._.forEach(this.WiService.places, function (n, key) {
-                if (n["BusinessName"].toLowerCase().indexOf(search.toLowerCase()) > -1)
-
-                    topsearch.push(n);
-
+            
             });
 
-
-
-
-            this.WiService.toparea = this._.sample(topsearch, 10);
-
+          
         }
 
-        EventSelect(Event: LocationList) {
+        EventSelect(Event: YelpPlaces) {
 
             this.WiService.eventSelected = Event;
 
-            this.WiService.GetLocation().then((response: any) => {
+            //this.WiService.GetLocation().then((response: any) => {
 
-                this.WiService.eventSelected.Address = response.results[0]['formatted_address'];
+            //    this.WiService.eventSelected.location.address = response.results[0]['formatted_address'];
 
-            });
+            //});
         }
 
 
@@ -79,7 +53,7 @@
             event.EventDate = this.WiService.eventUserList.DateOfEvent;
             event.WordfromLeader = this.WiService.wordTothePeople;
 
-            console.log(event);
+            
         }
 
 
@@ -111,10 +85,55 @@
     export class NewEvent<Object> {
 
         public LeaderInfo: UserInfo;
-        public Location: LocationList;
+        public Location: YelpPlaces;
         public EventDate: string;
         public WordfromLeader: string;
 
+    }
+
+    export class YelpSearch<Object> {
+
+        public searchterm: string;
+        public state: string;
+        public city: string;
+        public latitude: any;
+        public longitude: any;
+    }
+
+    export class YelpPlaces {
+        public deals: any;
+        public display_phone: string;
+        public distance: number;
+        public image_url: string;
+        public is_closed: boolean;
+        public location: YelpLocations;
+        public mobile_url: string;
+        public name: string;
+        public phone: string;
+        public rating: number;
+        public rating_img_url: string;
+        public rating_img_url_large: string;
+        public rating_img_url_small: string;
+        public review_count: number;
+        public reviews: any;
+        public snippet_image_url: string;
+        public snippet_text: string;
+        public url: string;
+
+    }
+
+    export class YelpLocations {
+
+        public address: any;
+        public city: string;
+        public coordinate: any;
+        public country_code: string;
+        public cross_streets: string;
+        public display_address: any;
+        public geo_accuracy: number;
+        public neighborhoods: any;
+        public postal_code: string;
+        public state_code: string;
     }
 }
 
